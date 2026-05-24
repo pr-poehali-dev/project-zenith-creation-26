@@ -1,5 +1,5 @@
 import { StarField } from "@/components/StarField"
-import { ChevronDown, Linkedin, Users, LineChart, Clock, Lightbulb, BotIcon as Robot } from "lucide-react"
+import { ChevronDown, Coins, Zap, Shield, Headphones, BotIcon as Robot } from "lucide-react"
 import { ContactForm } from "@/components/ContactForm"
 import { ChatbotModal } from "@/components/ChatbotModal"
 import { useState, useEffect, useRef } from "react"
@@ -25,31 +25,24 @@ export default function Index() {
   const lastScrollRef = useRef(0)
   const ticking = useRef(false)
 
-  // Store initial height on first render
   useEffect(() => {
     if (initialHeight === 0) {
       setInitialHeight(window.innerHeight)
     }
   }, [initialHeight])
 
-  // Handle scroll events to calculate blur amount
   useEffect(() => {
     const handleScroll = () => {
-      // Store the current scroll position
       scrollRef.current = window.scrollY
 
       if (!ticking.current) {
         window.requestAnimationFrame(() => {
-          // Calculate blur based on scroll position
-          // Reduced max blur from 20px to 8px for a more subtle effect
           const maxBlur = 8
-          // Increased trigger height to make the effect develop more slowly
           const triggerHeight = initialHeight * 1.2
           const newBlurAmount = Math.min(maxBlur, (scrollRef.current / triggerHeight) * maxBlur)
 
           setBlurAmount(newBlurAmount)
 
-          // Update last scroll position for next comparison
           lastScrollRef.current = scrollRef.current
           ticking.current = false
         })
@@ -65,21 +58,17 @@ export default function Index() {
     }
   }, [initialHeight])
 
-  // Intersection observer for visibility
   useEffect(() => {
     const headingObserver = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
           setIsHeadingVisible(true)
-          // Once visible, no need to observe anymore
           if (headingRef.current) {
             headingObserver.unobserve(headingRef.current)
           }
         }
       },
-      {
-        threshold: 0.1,
-      },
+      { threshold: 0.1 },
     )
 
     if (headingRef.current) {
@@ -90,15 +79,12 @@ export default function Index() {
       ([entry]) => {
         if (entry.isIntersecting) {
           setIsAboutVisible(true)
-          // Once visible, no need to observe anymore
           if (aboutContentRef.current) {
             aboutObserver.unobserve(aboutContentRef.current)
           }
         }
       },
-      {
-        threshold: 0.1,
-      },
+      { threshold: 0.1 },
     )
 
     if (aboutContentRef.current) {
@@ -109,15 +95,12 @@ export default function Index() {
       ([entry]) => {
         if (entry.isIntersecting) {
           setIsServicesVisible(true)
-          // Once visible, no need to observe anymore
           if (servicesContentRef.current) {
             servicesObserver.unobserve(servicesContentRef.current)
           }
         }
       },
-      {
-        threshold: 0.1,
-      },
+      { threshold: 0.1 },
     )
 
     if (servicesContentRef.current) {
@@ -128,15 +111,12 @@ export default function Index() {
       ([entry]) => {
         if (entry.isIntersecting) {
           setIsServicesTitleVisible(true)
-          // Once visible, no need to observe anymore
           if (servicesTitleRef.current) {
             servicesTitleObserver.unobserve(servicesTitleRef.current)
           }
         }
       },
-      {
-        threshold: 0.1,
-      },
+      { threshold: 0.1 },
     )
 
     if (servicesTitleRef.current) {
@@ -159,47 +139,28 @@ export default function Index() {
     }
   }, [])
 
-  // Calculate scale factor based on blur amount
-  // Maintain the same scaling effect even with reduced blur
-  const scaleFactor = 1 + blurAmount / 16 // Adjusted to maintain similar scaling with reduced blur
+  const scaleFactor = 1 + blurAmount / 16
 
-  // Add a warp speed effect to stars based on blur amount
   const warpSpeedStyle = {
     transform: `scale(${scaleFactor})`,
-    transition: "transform 0.2s ease-out", // Slightly longer transition for smoother effect
+    transition: "transform 0.2s ease-out",
   }
 
-  // Scroll to about section
   const scrollToAbout = () => {
     if (aboutSectionRef.current) {
-      aboutSectionRef.current.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-      })
+      aboutSectionRef.current.scrollIntoView({ behavior: "smooth", block: "start" })
     }
   }
 
-  // Scroll to contact section
   const scrollToContact = () => {
     if (contactSectionRef.current) {
-      contactSectionRef.current.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-      })
+      contactSectionRef.current.scrollIntoView({ behavior: "smooth", block: "start" })
     }
   }
 
-  // Open chatbot modal
-  const openChatbot = () => {
-    setIsChatbotOpen(true)
-  }
+  const openChatbot = () => setIsChatbotOpen(true)
+  const closeChatbot = () => setIsChatbotOpen(false)
 
-  // Close chatbot modal
-  const closeChatbot = () => {
-    setIsChatbotOpen(false)
-  }
-
-  // Use fixed height for hero section based on initial viewport height
   const heroStyle = {
     height: initialHeight ? `${initialHeight}px` : "100vh",
   }
@@ -207,25 +168,14 @@ export default function Index() {
   return (
     <div className="min-h-screen">
       <section className="relative w-full overflow-hidden bg-black" style={heroStyle}>
-        {/* Navigation links in top right corner */}
         <div className="absolute top-6 right-6 z-10 flex space-x-3">
-          <a
-            href="https://linkedin.com/company/example"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Профиль в LinkedIn"
-            className="inline-flex h-9 w-9 items-center justify-center rounded-md border border-white bg-transparent text-white transition-colors hover:bg-white hover:text-black focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-black"
-          >
-            <Linkedin className="h-5 w-5" />
-          </a>
-
           <Button
             onClick={scrollToContact}
             variant="outline"
             size="sm"
             className="bg-transparent text-white border-white hover:bg-white hover:text-black transition-colors"
           >
-            Контакты
+            Купить валюту
           </Button>
         </div>
 
@@ -241,13 +191,13 @@ export default function Index() {
               }}
             >
               <h1 className="text-4xl font-bold text-white md:text-6xl font-heading">
-                Nebula Ventures{" "}
-                <span role="img" aria-label="rocket">
-                  🚀
+                GoldVault{" "}
+                <span role="img" aria-label="монеты">
+                  🪙
                 </span>
               </h1>
               <p className="mt-4 text-lg text-gray-300 md:text-xl px-4 max-w-xs mx-auto md:max-w-none">
-                Экспертиза в области ИИ и технологий
+                Игровая валюта — быстро, безопасно, выгодно
               </p>
               <Button
                 onClick={scrollToAbout}
@@ -255,7 +205,7 @@ export default function Index() {
                 size="sm"
                 className="mt-6 bg-transparent text-white border-white hover:bg-white hover:text-black transition-colors"
               >
-                О нас
+                Узнать больше
               </Button>
             </div>
           </div>
@@ -287,27 +237,20 @@ export default function Index() {
             )}
           >
             <div className="flex flex-col md:flex-row items-center gap-8 md:gap-12">
-              <div className="w-48 h-48 md:w-64 md:h-64 rounded-full overflow-hidden border-4 border-gray-700 flex-shrink-0">
-                <img
-                  src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/icon-d4g0PyeQftYkhSxiNDNMwiGNNteM3o.svg"
-                  alt="Профиль"
-                  className="w-full h-full object-cover"
-                />
+              <div className="w-48 h-48 md:w-64 md:h-64 rounded-full overflow-hidden border-4 border-yellow-500/40 flex-shrink-0 flex items-center justify-center bg-gray-800">
+                <span className="text-8xl">🎮</span>
               </div>
               <div className="space-y-4 text-center md:text-left px-4 md:px-0">
                 <h2 className="text-3xl font-bold font-heading">О нас</h2>
                 <div className="space-y-4 max-w-2xl">
                   <p className="text-gray-300">
-                    Мы помогаем компаниям использовать передовые технологии, чтобы радовать клиентов
-                    и оптимизировать бизнес-процессы.
+                    GoldVault — магазин игровой валюты для самых популярных онлайн-игр. Мы работаем с 2020 года и провели тысячи успешных сделок.
                   </p>
                   <p className="text-gray-300">
-                    Стратегическое планирование, техническое лидерство или практическая поддержка разработки —
-                    мы поможем создать правильные решения для вашего бизнеса.
+                    Пополняй золото, кристаллы и монеты в любой игре — без ожидания и лишних сложностей. Доставка на аккаунт в течение нескольких минут.
                   </p>
                   <p className="text-gray-300">
-                    Наша команда имеет более 10 лет опыта создания сложных технических продуктов
-                    для стартапов и крупных компаний. Свяжитесь с нами или попробуйте ИИ-ассистента.
+                    Гарантируем безопасность каждой сделки и поддержку 24/7. Если возникнет вопрос — мы всегда на связи.
                   </p>
                 </div>
                 <div className="flex flex-col sm:flex-row gap-3 pt-4 justify-center md:justify-start">
@@ -316,18 +259,18 @@ export default function Index() {
                       onClick={scrollToContact}
                       variant="outline"
                       size="sm"
-                      className="bg-transparent text-white border-white hover:bg-white hover:text-black transition-colors w-[140px] mx-auto sm:mx-0"
+                      className="bg-transparent text-white border-white hover:bg-white hover:text-black transition-colors w-[160px] mx-auto sm:mx-0"
                     >
-                      Связаться
+                      Сделать заказ
                     </Button>
                     <Button
                       onClick={openChatbot}
                       variant="outline"
                       size="sm"
-                      className="bg-transparent text-white border-white hover:bg-white hover:text-black transition-colors w-[140px] mx-auto sm:mx-0 flex items-center justify-center"
+                      className="bg-transparent text-white border-white hover:bg-white hover:text-black transition-colors w-[160px] mx-auto sm:mx-0 flex items-center justify-center"
                     >
                       <Robot className="mr-1 h-4 w-4" />
-                      ИИ-чат
+                      Задать вопрос
                     </Button>
                   </div>
                 </div>
@@ -346,7 +289,7 @@ export default function Index() {
               isServicesTitleVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10",
             )}
           >
-            Услуги
+            Что мы предлагаем
           </h2>
           <div
             ref={servicesContentRef}
@@ -356,46 +299,43 @@ export default function Index() {
             )}
           >
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              {/* Fractional CPO */}
               <div className="bg-gray-800 rounded-lg p-6 transition-all duration-300 hover:bg-gray-700">
                 <div className="flex items-center mb-4">
-                  <Users className="h-7 w-7 text-white mr-4" aria-hidden="true" />
-                  <h3 className="text-xl font-semibold font-heading">CPO / CTO на аутсорсе</h3>
+                  <Coins className="h-7 w-7 text-yellow-400 mr-4" aria-hidden="true" />
+                  <h3 className="text-xl font-semibold font-heading">Игровая валюта</h3>
                 </div>
                 <p className="text-gray-300">
-                  Продуктовое лидерство, выстраивание процессов, развитие команды, технологическая стратегия.
+                  Золото, кристаллы, монеты, гемы и другая внутриигровая валюта для сотен популярных игр. Лучшие цены на рынке.
                 </p>
               </div>
 
-              {/* Product Consulting */}
               <div className="bg-gray-800 rounded-lg p-6 transition-all duration-300 hover:bg-gray-700">
                 <div className="flex items-center mb-4">
-                  <LineChart className="h-7 w-7 text-white mr-4" aria-hidden="true" />
-                  <h3 className="text-xl font-semibold font-heading">Продуктовый консалтинг</h3>
+                  <Zap className="h-7 w-7 text-blue-400 mr-4" aria-hidden="true" />
+                  <h3 className="text-xl font-semibold font-heading">Мгновенная доставка</h3>
                 </div>
                 <p className="text-gray-300">
-                  Разработка роадмапа, поиск и валидация product-market fit, оценка кандидатов.
+                  Валюта поступает на ваш игровой аккаунт в течение 5–15 минут после оплаты. Работаем круглосуточно.
                 </p>
               </div>
 
-              {/* Interim Leadership */}
               <div className="bg-gray-800 rounded-lg p-6 transition-all duration-300 hover:bg-gray-700">
                 <div className="flex items-center mb-4">
-                  <Clock className="h-7 w-7 text-white mr-4" aria-hidden="true" />
-                  <h3 className="text-xl font-semibold font-heading">Временное руководство</h3>
-                </div>
-                <p className="text-gray-300">Временный CPO или VP of Product для компаний в период трансформации.</p>
-              </div>
-
-              {/* Workshops & Advisory */}
-              <div className="bg-gray-800 rounded-lg p-6 transition-all duration-300 hover:bg-gray-700">
-                <div className="flex items-center mb-4">
-                  <Lightbulb className="h-7 w-7 text-white mr-4" aria-hidden="true" />
-                  <h3 className="text-xl font-semibold font-heading">Разработка продуктов</h3>
+                  <Shield className="h-7 w-7 text-green-400 mr-4" aria-hidden="true" />
+                  <h3 className="text-xl font-semibold font-heading">Безопасные сделки</h3>
                 </div>
                 <p className="text-gray-300">
-                  Быстрое прототипирование и запуск внутренних и внешних приложений и сайтов
-                  с использованием современных инструментов.
+                  Все сделки защищены. Мы не запрашиваем пароль от аккаунта и работаем только проверенными методами передачи.
+                </p>
+              </div>
+
+              <div className="bg-gray-800 rounded-lg p-6 transition-all duration-300 hover:bg-gray-700">
+                <div className="flex items-center mb-4">
+                  <Headphones className="h-7 w-7 text-purple-400 mr-4" aria-hidden="true" />
+                  <h3 className="text-xl font-semibold font-heading">Поддержка 24/7</h3>
+                </div>
+                <p className="text-gray-300">
+                  Наша команда всегда на связи. Помогаем с выбором игры, консультируем по объёмам и решаем любые вопросы.
                 </p>
               </div>
             </div>
@@ -408,17 +348,19 @@ export default function Index() {
           <h2
             ref={headingRef}
             className={cn(
-              "mb-12 text-center text-3xl font-bold font-heading transition-all duration-1000 ease-out",
+              "mb-4 text-center text-3xl font-bold font-heading transition-all duration-1000 ease-out",
               isHeadingVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10",
             )}
           >
-            Давайте создавать
+            Сделать заказ
           </h2>
+          <p className="text-center text-gray-500 mb-10">
+            Укажите игру, количество валюты и мы свяжемся с вами
+          </p>
           <ContactForm />
         </div>
       </section>
 
-      {/* Chatbot Modal */}
       <ChatbotModal isOpen={isChatbotOpen} onClose={closeChatbot} />
     </div>
   )
